@@ -1,0 +1,72 @@
+# Development environment
+/node_modules/
+/.aja/
+/.idea/
+/.snaps/
+iec-data-*
+/vendor/
+/htdocs/
+/checkstyle.xml
+/phpcs.xml
+/phpmd.xml
+
+# Config file samples
+/auth.json.sample
+/package.json.sample
+/package-lock.json
+/package.json
+/grunt-config.json.sample
+/nginx.conf.sample
+/php.ini.sample
+/.php_cs.dist
+
+# Service configuration
+/.php_cs
+/.user.ini
+.htaccess
+/.htaccess.sample
+/Gruntfile.js.sample
+
+# Sphinx
+/docs/_build
+/docs/changelog.rst
+
+# Mapped files from magento2-base
+/app/autoload.php
+/app/bootstrap.php
+/app/functions.php
+/app/design/adminhtml/Magento/
+/app/design/frontend/Magento/
+/app/etc/
+/lib/
+/dev/
+/setup/
+/phpserver/
+/bin/magento
+*.map
+/Gruntfile.js
+/.travis.yml
+/.travis.yml.sample
+/index.php
+
+# Generated files
+/pub/
+/generated/
+/var/.regenerate
+/var/.maintenance.flag
+/var/log
+
+# Misc readme's
+/PULL_REQUEST_TEMPLATE.md
+/CHANGELOG.md
+/CONTRIBUTING.md
+/ISSUE_TEMPLATE.md
+/CONTRIBUTOR_LICENSE_AGREEMENT.html
+/COPYING.txt
+/README_EE.md
+/LICENSE.txt
+/LICENSE_AFL.txt
+/LICENSE_EE.txt
+/LICENSE_B2B.txt
+/SECURITY.md
+/.github/
