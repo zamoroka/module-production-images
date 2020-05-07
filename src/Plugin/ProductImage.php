@@ -8,12 +8,11 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Image\ParamsBuilder;
 use Magento\Catalog\Model\Product\Media\Config as MediaConfig;
 use Magento\Catalog\Model\View\Asset\PlaceholderFactory;
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\File\WriteInterface as FileWriteInterface;
 use Magento\Framework\View\ConfigInterface;
-use Psr\Log\LoggerInterface;
 use Zamoroka\ProductionImages\Helper\Config;
+use Zamoroka\ProductionImages\Model\ImageDownloader;
 
 class ProductImage
 {
@@ -27,14 +26,12 @@ class ProductImage
     private $filesystem;
     /** @var MediaConfig */
     private $mediaConfig;
-    /** @var LoggerInterface */
-    private $logger;
-    /** @var Filesystem\Directory\WriteInterface */
-    private $directory;
     /** @var PlaceholderFactory */
     private $viewAssetPlaceholderFactory;
     /** @var Config */
     private $config;
+    /** @var ImageDownloader */
+    private $imageDownloader;
 
     /**
      * @param ConfigInterface $presentationConfig
@@ -42,9 +39,10 @@ class ProductImage
      * @param ParamsBuilder $imageParamsBuilder
      * @param MediaConfig $mediaConfig
      * @param Filesystem $filesystem
-     * @param LoggerInterface $logger
      *
      * @param Config $config
+     *
+     * @param ImageDownloader $imageDownloader
      *
      * @throws \Magento\Framework\Exception\FileSystemException
      */
@@ -54,17 +52,16 @@ class ProductImage
         ParamsBuilder $imageParamsBuilder,
         MediaConfig $mediaConfig,
         Filesystem $filesystem,
-        LoggerInterface $logger,
-        Config $config
+        Config $config,
+        ImageDownloader $imageDownloader
     ) {
         $this->presentationConfig = $presentationConfig;
         $this->viewAssetPlaceholderFactory = $viewAssetPlaceholderFactory;
         $this->imageParamsBuilder = $imageParamsBuilder;
         $this->filesystem = $filesystem;
         $this->mediaConfig = $mediaConfig;
-        $this->directory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
-        $this->logger = $logger;
         $this->config = $config;
+        $this->imageDownloader = $imageDownloader;
     }
 
     /**
@@ -81,15 +78,7 @@ class ProductImage
             return [$product, $imageId, $attributes];
         }
         $filePath = $this->getFilePath($product, $imageId);
-        if (!$this->directory->isExist($filePath)) {
-            try {
-                $url = $this->config->getProductionMediaUrl() . $filePath;
-                $this->directory->create(\dirname($filePath));
-                $this->directory->writeFile($filePath, \file_get_contents($url));
-            } catch (\Exception $exception) {
-                $this->logger->error($exception->getMessage());
-            }
-        }
+        $this->imageDownloader->downloadImage($filePath);
 
         return [$product, $imageId, $attributes];
     }
