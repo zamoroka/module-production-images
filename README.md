@@ -3,7 +3,7 @@
 ##### Installation
 
 ```
-compser require-dev zamoroka/module-production-images
+composer require zamoroka/module-production-images --dev
 ```
 
 ##### Configuration
