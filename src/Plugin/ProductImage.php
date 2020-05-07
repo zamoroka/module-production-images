@@ -27,7 +27,7 @@ class ProductImage
     /** @var MediaConfig */
     private $mediaConfig;
     /** @var PlaceholderFactory */
-    private $viewAssetPlaceholderFactory;
+    private $placeholderFactory;
     /** @var Config */
     private $config;
     /** @var ImageDownloader */
@@ -35,20 +35,16 @@ class ProductImage
 
     /**
      * @param ConfigInterface $presentationConfig
-     * @param PlaceholderFactory $viewAssetPlaceholderFactory
+     * @param PlaceholderFactory $placeholderFactory
      * @param ParamsBuilder $imageParamsBuilder
      * @param MediaConfig $mediaConfig
      * @param Filesystem $filesystem
-     *
      * @param Config $config
-     *
      * @param ImageDownloader $imageDownloader
-     *
-     * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
         ConfigInterface $presentationConfig,
-        PlaceholderFactory $viewAssetPlaceholderFactory,
+        PlaceholderFactory $placeholderFactory,
         ParamsBuilder $imageParamsBuilder,
         MediaConfig $mediaConfig,
         Filesystem $filesystem,
@@ -56,7 +52,7 @@ class ProductImage
         ImageDownloader $imageDownloader
     ) {
         $this->presentationConfig = $presentationConfig;
-        $this->viewAssetPlaceholderFactory = $viewAssetPlaceholderFactory;
+        $this->placeholderFactory = $placeholderFactory;
         $this->imageParamsBuilder = $imageParamsBuilder;
         $this->filesystem = $filesystem;
         $this->mediaConfig = $mediaConfig;
@@ -99,7 +95,7 @@ class ProductImage
         $imageMiscParams = $this->imageParamsBuilder->build($viewImageConfig);
         $originalFilePath = $product->getData($imageMiscParams['image_type']);
         if ($originalFilePath === null || $originalFilePath === 'no_selection') {
-            $imageAsset = $this->viewAssetPlaceholderFactory->create(['type' => $imageMiscParams['image_type']]);
+            $imageAsset = $this->placeholderFactory->create(['type' => $imageMiscParams['image_type']]);
             $filePath = $this->mediaConfig->getMediaPath(
                 $imageAsset->getModule() . DIRECTORY_SEPARATOR . $imageAsset->getFilePath()
             );
