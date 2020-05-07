@@ -13,6 +13,7 @@ use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\File\WriteInterface as FileWriteInterface;
 use Magento\Framework\View\ConfigInterface;
 use Psr\Log\LoggerInterface;
+use Zamoroka\ProductionImages\Helper\Config;
 
 class ProductImage
 {
@@ -32,6 +33,8 @@ class ProductImage
     private $directory;
     /** @var PlaceholderFactory */
     private $viewAssetPlaceholderFactory;
+    /** @var Config */
+    private $config;
 
     /**
      * @param ConfigInterface $presentationConfig
@@ -41,6 +44,8 @@ class ProductImage
      * @param Filesystem $filesystem
      * @param LoggerInterface $logger
      *
+     * @param Config $config
+     *
      * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function __construct(
@@ -49,7 +54,8 @@ class ProductImage
         ParamsBuilder $imageParamsBuilder,
         MediaConfig $mediaConfig,
         Filesystem $filesystem,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Config $config
     ) {
         $this->presentationConfig = $presentationConfig;
         $this->viewAssetPlaceholderFactory = $viewAssetPlaceholderFactory;
@@ -58,9 +64,11 @@ class ProductImage
         $this->mediaConfig = $mediaConfig;
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->logger = $logger;
+        $this->config = $config;
     }
 
     /**
+     * @param ImageFactory $imgFactory
      * @param Product $product
      * @param string $imageId
      * @param array|null $attributes
@@ -68,6 +76,31 @@ class ProductImage
      * @return array
      */
     public function beforeCreate(ImageFactory $imgFactory, Product $product, string $imageId, array $attributes = null)
+    {
+        if (!$this->config->isEnabled()) {
+            return [$product, $imageId, $attributes];
+        }
+        $filePath = $this->getFilePath($product, $imageId);
+        if (!$this->directory->isExist($filePath)) {
+            try {
+                $url = $this->config->getProductionMediaUrl() . $filePath;
+                $this->directory->create(\dirname($filePath));
+                $this->directory->writeFile($filePath, \file_get_contents($url));
+            } catch (\Exception $exception) {
+                $this->logger->error($exception->getMessage());
+            }
+        }
+
+        return [$product, $imageId, $attributes];
+    }
+
+    /**
+     * @param Product $product
+     * @param string $imageId
+     *
+     * @return string
+     */
+    private function getFilePath(Product $product, string $imageId)
     {
         $viewImageConfig = $this->presentationConfig->getViewConfig()->getMediaAttributes(
             'Magento_Catalog',
@@ -84,16 +117,7 @@ class ProductImage
         } else {
             $filePath = $this->mediaConfig->getMediaPath($originalFilePath);
         }
-        if (!$this->directory->isExist($filePath)) {
-            try {
-                $url = 'https://example.com/media/' . $filePath;
-                $this->directory->create(\dirname($filePath));
-                $this->directory->writeFile($filePath, \file_get_contents($url));
-            } catch (\Exception $exception) {
-                $this->logger->error($exception->getMessage());
-            }
-        }
 
-        return [$product, $imageId, $attributes];
+        return $filePath;
     }
 }

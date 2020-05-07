@@ -8,6 +8,6 @@ composer require zamoroka/module-production-images --dev
 
 ##### Configuration
 
-Place production media url in Store -> Configuration -> Zamoroka -> Production images -> Production media url
-
-e.g https://example.com/media/
+1. Enable module
+2. Provide production media URL in `Store -> Configuration -> Zamoroka -> Production images -> Production media URL`. e.g https://example.com/media/
+3. Clear config and image cache
