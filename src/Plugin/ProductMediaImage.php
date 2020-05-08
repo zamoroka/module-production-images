@@ -1,13 +1,17 @@
 <?php
+/**
+ * Copyright © Vaimo Group. All rights reserved.
+ * See LICENSE_VAIMO.txt for license details.
+ */
+declare(strict_types=1);
 
 namespace Zamoroka\ProductionImages\Plugin;
 
-use Magento\Catalog\Model\Category;
-use Magento\Catalog\Model\Category\FileInfo;
+use Magento\Catalog\Model\Product\Media\Config as MediaConfig;
 use Zamoroka\ProductionImages\Helper\Config;
 use Zamoroka\ProductionImages\Model\ImageDownloader;
 
-class CategoryImage
+class ProductMediaImage
 {
     /** @var Config */
     private $config;
@@ -29,32 +33,29 @@ class CategoryImage
     }
 
     /**
-     * @param Category $subject
-     * @param string $attributeCode
+     * @param MediaConfig $subject
+     * @param string $file
      *
-     * @return string[]
+     * @return array
      */
-    public function beforeGetImageUrl(Category $subject, $attributeCode = 'image')
+    public function beforeGetMediaUrl(MediaConfig $subject, $file)
     {
         if (!$this->config->isEnabled()) {
-            return [$attributeCode];
+            return [$file];
         }
-        $image = $subject->getData($attributeCode);
-        if (!$image || !is_string($image)) {
-            return [$attributeCode];
-        }
-        $this->imageDownloader->downloadImage($this->getFilePath($image));
+        $this->imageDownloader->downloadImage($this->getFilePath($subject, $file));
 
-        return [$attributeCode];
+        return [$file];
     }
 
     /**
-     * @param string $image
+     * @param MediaConfig $config
+     * @param $file
      *
      * @return string
      */
-    private function getFilePath(string $image): string
+    private function getFilePath(MediaConfig $config, string $file): string
     {
-        return FileInfo::ENTITY_MEDIA_PATH . DIRECTORY_SEPARATOR . $image;
+        return $config->getBaseMediaPath() . DIRECTORY_SEPARATOR . $file;
     }
 }

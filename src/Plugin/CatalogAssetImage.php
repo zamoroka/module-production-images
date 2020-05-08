@@ -2,12 +2,11 @@
 
 namespace Zamoroka\ProductionImages\Plugin;
 
-use Magento\Catalog\Model\Category;
-use Magento\Catalog\Model\Category\FileInfo;
+use Magento\Catalog\Model\View\Asset\Image;
 use Zamoroka\ProductionImages\Helper\Config;
 use Zamoroka\ProductionImages\Model\ImageDownloader;
 
-class CategoryImage
+class CatalogAssetImage
 {
     /** @var Config */
     private $config;
@@ -29,32 +28,27 @@ class CategoryImage
     }
 
     /**
-     * @param Category $subject
-     * @param string $attributeCode
+     * @param Image $subject
      *
-     * @return string[]
+     * @return array
      */
-    public function beforeGetImageUrl(Category $subject, $attributeCode = 'image')
+    public function beforeGetUrl(Image $subject)
     {
         if (!$this->config->isEnabled()) {
-            return [$attributeCode];
+            return [];
         }
-        $image = $subject->getData($attributeCode);
-        if (!$image || !is_string($image)) {
-            return [$attributeCode];
-        }
-        $this->imageDownloader->downloadImage($this->getFilePath($image));
+        $this->imageDownloader->downloadImage($this->getFilePath($subject));
 
-        return [$attributeCode];
+        return [];
     }
 
     /**
-     * @param string $image
+     * @param Image $image
      *
      * @return string
      */
-    private function getFilePath(string $image): string
+    private function getFilePath(Image $image): string
     {
-        return FileInfo::ENTITY_MEDIA_PATH . DIRECTORY_SEPARATOR . $image;
+        return $image->getSourceFile();
     }
 }
