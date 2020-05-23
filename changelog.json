@@ -1,0 +1,17 @@
+{
+    "0.1.2": {
+        "feature": [
+            "Wysiwyg images"
+        ]
+    },
+    "0.1.1": {
+        "feature": [
+            "category images"
+        ]
+    },
+    "0.1.0": {
+        "feature": [
+            "system config, download product images"
+        ]
+    }
+}
