@@ -1,7 +1,7 @@
 {
     "0.1.3": {
         "feature": [
-            "Get image after getSourceFile instead of getUrl to make it work when image is getting by product image block"
+            "Fix image downloading in product image block"
         ]
     },
     "0.1.2": {
