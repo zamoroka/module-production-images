@@ -1,7 +1,12 @@
 {
+    "0.1.3": {
+        "feature": [
+            "Get image after getSourceFile instead of getUrl to make it work when image is getting by product image block"
+        ]
+    },
     "0.1.2": {
         "feature": [
-            "Wysiwyg images"
+            "simplify downloading product image logic, download media gallery images"
         ]
     },
     "0.1.1": {

@@ -32,23 +32,13 @@ class CatalogAssetImage
      *
      * @return array
      */
-    public function beforeGetUrl(Image $subject)
+    public function afterGetSourceFile(Image $subject, $file)
     {
         if (!$this->config->isEnabled()) {
-            return [];
+            return $file;
         }
-        $this->imageDownloader->downloadImage($this->getFilePath($subject));
+        $this->imageDownloader->downloadImage($file);
 
-        return [];
-    }
-
-    /**
-     * @param Image $image
-     *
-     * @return string
-     */
-    private function getFilePath(Image $image): string
-    {
-        return $image->getSourceFile();
+        return $file;
     }
 }

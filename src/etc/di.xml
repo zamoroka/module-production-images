@@ -4,9 +4,6 @@
     <type name="Magento\Catalog\Model\Category">
         <plugin name="downloadCategoryImage" type="Zamoroka\ProductionImages\Plugin\CategoryImage"/>
     </type>
-    <type name="Magento\Catalog\Model\Product\Media\Config">
-        <plugin name="downloadProductMediaImage" type="Zamoroka\ProductionImages\Plugin\ProductMediaImage"/>
-    </type>
     <type name="Magento\Catalog\Model\View\Asset\Placeholder">
         <plugin name="downloadPlaceholderImage" type="Zamoroka\ProductionImages\Plugin\CatalogAssetPlaceholderImage"/>
     </type>
