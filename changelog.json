@@ -1,4 +1,9 @@
 {
+    "0.1.7": {
+        "feature": [
+            "Added PHP 7.4 compatibility"
+        ]
+    },
     "0.1.6": {
         "feature": [
             "Magento 2.4 compatibility"
