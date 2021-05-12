@@ -16,8 +16,6 @@ class ImageDownloader
     private $logger;
     /** @var Filesystem\Directory\WriteInterface */
     private $directory;
-    /** @var Filesystem */
-    private $filesystem;
 
     /**
      * @param Filesystem $filesystem
@@ -32,7 +30,6 @@ class ImageDownloader
         LoggerInterface $logger,
         Config $config
     ) {
-        $this->filesystem = $filesystem;
         $this->directory = $filesystem->getDirectoryWrite(DirectoryList::MEDIA);
         $this->logger = $logger;
         $this->config = $config;

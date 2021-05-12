@@ -1,13 +1,7 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Catalog\Model\Category">
-        <plugin name="downloadCategoryImage" type="Zamoroka\ProductionImages\Plugin\CategoryImage"/>
-    </type>
-    <type name="Magento\Catalog\Model\View\Asset\Placeholder">
-        <plugin name="downloadPlaceholderImage" type="Zamoroka\ProductionImages\Plugin\CatalogAssetPlaceholderImage"/>
-    </type>
-    <type name="Magento\Catalog\Model\View\Asset\Image">
-        <plugin name="downloadAssetImage" type="Zamoroka\ProductionImages\Plugin\CatalogAssetImage"/>
+    <type name="Magento\MediaStorage\Model\File\Storage\Synchronization">
+        <plugin name="downloadImage" type="Zamoroka\ProductionImages\Plugin\DownloadImage"/>
     </type>
 </config>

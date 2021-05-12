@@ -1,4 +1,9 @@
 {
+    "0.2.0": {
+        "feature": [
+            "Load images images while Magento gets it from pub/get.php"
+        ]
+    },
     "0.1.7": {
         "feature": [
             "Added PHP 7.4 compatibility"
