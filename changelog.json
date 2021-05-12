@@ -1,7 +1,7 @@
 {
     "0.2.0": {
         "feature": [
-            "Load images images while Magento gets it from pub/get.php"
+            "Load images while Magento gets them from pub/get.php"
         ]
     },
     "0.1.7": {
