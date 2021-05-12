@@ -13,11 +13,15 @@ use Zamoroka\ProductionImages\Model\ImageDownloader;
 
 class DownloadImage
 {
+    /** @var Config */
+    private $config;
+    /** @var ImageDownloader */
+    private $imageDownloader;
+
     public function __construct(
         Config $config,
         ImageDownloader $imageDownloader
     ) {
-
         $this->config = $config;
         $this->imageDownloader = $imageDownloader;
     }
@@ -43,13 +47,9 @@ class DownloadImage
         return [$relativeFileName];
     }
 
-    private function cleanFilePath($filePath)
+    private function cleanFilePath(string $filePath): string
     {
-        $prefix = 'media/';
-        if (substr($filePath, 0, strlen($prefix)) == $prefix) {
-            $filePath = substr($filePath, strlen($prefix));
-        }
-
-        return $filePath;
+        // remove `media/` and `cache/.*/` from $filePath
+        return \preg_replace('/media\/|cache\/.*?\//i', '', $filePath);
     }
 }
