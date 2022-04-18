@@ -3,7 +3,7 @@
     "description": "Magento 2 module: Get only necessary images from production. No need to download whole media folder",
     "minimum-stability":"stable",
     "require": {
-        "php": "~7.1.0||~7.2.0||~7.3.0||~7.4.0",
+        "php": "~7.1||~8.0",
         "magento/framework": "^100.1||^101.0||^102.0||^103.0"
     },
     "require-dev": {
